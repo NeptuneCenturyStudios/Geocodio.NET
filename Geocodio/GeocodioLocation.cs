@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Geocodio
 {
-    public class Class1
+    public class GeocodioLocation
     {
+        public double Lat { get; set; }
+        public double Lng { get; set; }
     }
 }
