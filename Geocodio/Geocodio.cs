@@ -78,6 +78,46 @@ namespace Geocodio
 
             
         }
+
+        /// <summary>
+        /// Asyncronously looks up a single address and returns the geocoded result from Geocodio
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns></returns>
+        public async Task<GeocodioResponse> GetGeolocationAsync(string address)
+        {
+            //some sanity checks
+            if (string.IsNullOrWhiteSpace(address))
+            {
+                //must have an address
+                throw new ArgumentNullException(nameof(address));
+            }
+
+            if (string.IsNullOrWhiteSpace(ApiKey))
+            {
+                //must have an api key
+                throw new InvalidOperationException("An API key is required for this request");
+            }
+
+            //create a web request
+            var webreq = WebRequest.Create($"https://api.geocod.io/v1/geocode?q={address}&api_key={ApiKey}");
+
+            //ensure our response comes in json
+            webreq.ContentType = "application/json";
+
+            //execute and get the response
+            var webresp = await webreq.GetResponseAsync();
+
+            //read the response into a json string
+            using (var sr = new StreamReader(webresp.GetResponseStream()))
+            {
+                //read the stream
+                var json = await sr.ReadToEndAsync();
+
+                //create response from json
+                return GeocodioResponse.CreateFromJSON(json);
+            }
+        }
         #endregion
     }
 }
