@@ -10,7 +10,7 @@ namespace Geocodio
     public class GeocodioBatchResponse
     {
         #region Properties
-        public List<GeocodioBatchResult> Results { get; set; }
+        public List<GeocodioBatchResult> Results { get; private set; }
         #endregion
 
         #region Constructor
