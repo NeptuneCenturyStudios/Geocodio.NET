@@ -47,8 +47,10 @@
   <ItemGroup>
     <Compile Include="Geocodio.cs" />
     <Compile Include="GeocodioAddressComponents.cs" />
+    <Compile Include="GeocodioBatchResult.cs" />
     <Compile Include="GeocodioLocation.cs" />
     <Compile Include="GeocodioResponse.cs" />
+    <Compile Include="GeocodioBatchResponse.cs" />
     <Compile Include="GeocodioResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

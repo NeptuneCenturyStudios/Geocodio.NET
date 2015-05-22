@@ -18,26 +18,13 @@ namespace Geocodio
         #endregion
 
         #region Constructors
-        private GeocodioResponse()
+        public GeocodioResponse(JToken response)
         {
             //private constructor
             Results = new List<GeocodioResult>();
-        }
-        #endregion
-
-        #region Static Methods
-
-        public static GeocodioResponse CreateFromJSON(string json)
-        {
-            var geoResponse = new GeocodioResponse();
-            //deserialize
-            JObject obj = (JObject)JsonConvert.DeserializeObject(json);
-
-            //read the components
-            var results = obj["results"];
 
             //for each result, create a result object
-            foreach (var result in results)
+            foreach (var result in response["results"])
             {
                 //get the address components field
                 var addrComp = result["address_components"];
@@ -67,14 +54,10 @@ namespace Geocodio
                 };
 
                 //add to the collection of results
-                geoResponse.Results.Add(geoResult);
+                Results.Add(geoResult);
             }
-
-            //return the geocodio response object
-            return geoResponse;
-
         }
-
         #endregion
+
     }
 }

@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Geocodio
 {
@@ -71,9 +72,12 @@ namespace Geocodio
             {
                 //read the stream
                 var json = sr.ReadToEnd();
-                
+
+                //deserialze
+                var jobj = (JToken)JsonConvert.DeserializeObject(json);
+
                 //create response from json
-                return GeocodioResponse.CreateFromJSON(json);
+                return new GeocodioResponse(jobj);
             }
 
             
@@ -86,11 +90,29 @@ namespace Geocodio
         /// <returns></returns>
         public async Task<GeocodioResponse> GetGeolocationAsync(string address)
         {
+            return await Task.Factory.StartNew(() => { return GetGeolocation(address); });
+        }
+
+        /// <summary>
+        /// Executes a batch request to look up multiple addresses
+        /// </summary>
+        /// <param name="addresses"></param>
+        /// <remarks>You can batch up to 10000 addresses in a single request</remarks>
+        /// <returns></returns>
+        public GeocodioBatchResponse GetGeolocations(string[] addresses)
+        {
+
             //some sanity checks
-            if (string.IsNullOrWhiteSpace(address))
+            if (addresses == null)
             {
                 //must have an address
-                throw new ArgumentNullException(nameof(address));
+                throw new ArgumentNullException(nameof(addresses));
+            }
+
+            if (addresses.Length > 10000)
+            {
+                //too many addresses in the batch
+                throw new InvalidOperationException("Geocodio only allows a maximum of 10000 addresses per batch");
             }
 
             if (string.IsNullOrWhiteSpace(ApiKey))
@@ -100,24 +122,50 @@ namespace Geocodio
             }
 
             //create a web request
-            var webreq = WebRequest.Create($"https://api.geocod.io/v1/geocode?q={address}&api_key={ApiKey}");
+            var webreq = WebRequest.Create($"https://api.geocod.io/v1/geocode?api_key={ApiKey}");
 
+            //this request is sent as a post
+            webreq.Method = "POST";
             //ensure our response comes in json
             webreq.ContentType = "application/json";
 
+            //build the body of the request
+            using (var sw = new StreamWriter(webreq.GetRequestStream()))
+            {
+                //serialize our addresses as a json string
+                var json = JsonConvert.SerializeObject(addresses);
+                //write the string to the stream
+                sw.Write(json);
+            }
+
             //execute and get the response
-            var webresp = await webreq.GetResponseAsync();
+            var webresp = webreq.GetResponse();
 
             //read the response into a json string
             using (var sr = new StreamReader(webresp.GetResponseStream()))
             {
                 //read the stream
-                var json = await sr.ReadToEndAsync();
+                var json = sr.ReadToEnd();
+
+                //deserialze
+                var jobj = (JToken)JsonConvert.DeserializeObject(json);
 
                 //create response from json
-                return GeocodioResponse.CreateFromJSON(json);
+                return new GeocodioBatchResponse(jobj);
             }
         }
+
+        /// <summary>
+        /// Asyncronously executes a batch request to look up multiple addresses
+        /// </summary>
+        /// <param name="addresses"></param>
+        /// <remarks>You can batch up to 10000 addresses in a single request</remarks>
+        /// <returns></returns>
+        public async Task<GeocodioBatchResponse> GetGeolocationsAsync(string[] addresses)
+        {
+            return await Task.Factory.StartNew(() => { return GetGeolocations(addresses); });
+        }
+
         #endregion
     }
 }
