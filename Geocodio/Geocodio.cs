@@ -29,13 +29,12 @@ namespace Geocodio
         /// <summary>
         /// Initializes an instance of the Geocodio class
         /// </summary>
-        public Geocodio()
-        {
-
-        }
+        public Geocodio() { }
         #endregion
 
         #region Methods
+
+        #region Geocoding
 
         /// <summary>
         /// Looks up a single address and returns the geocoded result from Geocodio
@@ -80,7 +79,7 @@ namespace Geocodio
                 return new GeocodioResponse(jobj);
             }
 
-            
+
         }
 
         /// <summary>
@@ -165,6 +164,52 @@ namespace Geocodio
         {
             return await Task.Factory.StartNew(() => { return GetGeolocations(addresses); });
         }
+
+        #endregion
+
+        #region Reverse Geocoding
+
+        /// <summary>
+        /// Looks up an address based on latitude and longitue coordinates
+        /// </summary>
+        /// <param name="lat"></param>
+        /// <param name="lng"></param>
+        /// <returns></returns>
+        public GeocodioResponse GetAddress(double lat, double lng)
+        {
+            
+            if (string.IsNullOrWhiteSpace(ApiKey))
+            {
+                //must have an api key
+                throw new InvalidOperationException("An API key is required for this request");
+            }
+
+            //create a web request
+            var webreq = WebRequest.Create($"https://api.geocod.io/v1/reverse?q={lat},{lng}&api_key={ApiKey}");
+
+            //ensure our response comes in json
+            webreq.ContentType = "application/json";
+
+            //execute and get the response
+            var webresp = webreq.GetResponse();
+
+            //read the response into a json string
+            using (var sr = new StreamReader(webresp.GetResponseStream()))
+            {
+                //read the stream
+                var json = sr.ReadToEnd();
+
+                //deserialze
+                var jobj = (JToken)JsonConvert.DeserializeObject(json);
+
+                //create response from json
+                return new GeocodioResponse(jobj);
+            }
+
+
+        }
+
+        #endregion
 
         #endregion
     }

@@ -11,6 +11,7 @@ namespace Geocodio
         public string Number { get; set; }
         public string Street { get; set; }
         public string Suffix { get; set; }
+        public string PostDirectional { get; set; }
         public string City { get; set; }
         public string County { get; set; }
         public string State { get; set; }

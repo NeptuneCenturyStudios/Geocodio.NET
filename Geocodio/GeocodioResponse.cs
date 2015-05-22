@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Geocodio
 {
+    /// <summary>
+    /// Respresents the response from Geocodio
+    /// </summary>
     public class GeocodioResponse
     {
         #region Properties
@@ -18,6 +21,11 @@ namespace Geocodio
         #endregion
 
         #region Constructors
+
+        /// <summary>
+        /// Creates an instance of the GeocodioResponse class from part of the response JSON object
+        /// </summary>
+        /// <param name="response"></param>
         public GeocodioResponse(JToken response)
         {
             //private constructor
@@ -39,6 +47,7 @@ namespace Geocodio
                         Number = (string)addrComp?["number"],
                         Street = (string)addrComp?["street"],
                         Suffix = (string)addrComp?["suffix"],
+                        PostDirectional = (string)addrComp?["postdirectional"],
                         City = (string)addrComp?["city"],
                         County = (string)addrComp?["county"],
                         State = (string)addrComp?["state"],
