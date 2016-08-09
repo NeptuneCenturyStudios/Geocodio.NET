@@ -18,19 +18,31 @@ namespace Geocodio
 
             //create list
             Results = new List<GeocodioBatchResult>();
-
-            //iterate through each result
-            foreach(var result in response["results"])
-            {
-                //create new result
-                var geoRes = new GeocodioBatchResult()
-                {
-                    Query = (string)result["query"],
-                    Response = new GeocodioResponse(result["response"])
-                };
-
-                Results.Add(geoRes);
-            }
+            
+            Object contents = null;
+			try {
+				contents = ((IDictionary<string, JToken>)response).ToDictionary(
+					pair => pair.Key,
+					pair => (JObject)pair.Value
+				);
+				foreach (KeyValuePair<string, JObject> result in ((Dictionary<string, JObject>)contents)) {
+					Results.Add(new GeocodioBatchResult() {
+						ID = result.Key,
+						Query = (string)result.Value["query"],
+						Response = new GeocodioResponse(result.Value["response"])
+					});
+				}
+			} catch (Exception e) {
+				int count = 0;
+				foreach (var result in response["results"]) {
+					count++;
+					Results.Add(new GeocodioBatchResult() {
+						ID = count.ToString(),
+						Query = (string)result["query"],
+						Response = new GeocodioResponse(result["response"])
+					});
+				}
+			}
 
         }
         #endregion
