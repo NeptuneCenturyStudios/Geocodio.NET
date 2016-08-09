@@ -52,6 +52,7 @@ namespace Geocodio
                         County = (string)addrComp?["county"],
                         State = (string)addrComp?["state"],
                         Zip = (string)addrComp?["zip"],
+                        FormattedStreet = (string)result["formatted_street"],
                     },
                     FormattedAddress = (string)result["formatted_address"],
                     Location = new GeocodioLocation()
