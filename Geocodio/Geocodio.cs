@@ -98,7 +98,7 @@ namespace Geocodio
         /// <param name="addresses"></param>
         /// <remarks>You can batch up to 10000 addresses in a single request</remarks>
         /// <returns></returns>
-        public GeocodioBatchResponse GetGeolocations(string[] addresses)
+        public GeocodioBatchResponse GetGeolocations(Object addresses)
         {
 
             //some sanity checks
@@ -108,11 +108,14 @@ namespace Geocodio
                 throw new ArgumentNullException(nameof(addresses));
             }
 
-            if (addresses.Length > 10000)
+            if (addresses.GetType()==typeof(String[]) && (((String[])addresses).Length > 10000))
             {
                 //too many addresses in the batch
-                throw new InvalidOperationException("Geocodio only allows a maximum of 10000 addresses per batch");
-            }
+                throw new InvalidOperationException("Geocodio only allows a maximum of 10000 addresses per batch (array of string addresses)");
+            } else if (addresses.GetType() == typeof(List<GeocodioAddressComponents>) && (((List<GeocodioAddressComponents>)addresses).Count > 10000)) {
+				//too many addresses in the batch
+				throw new InvalidOperationException("Geocodio only allows a maximum of 10000 addresses per batch (Dictionary of identified addresses)");
+			}
 
             if (string.IsNullOrWhiteSpace(ApiKey))
             {
