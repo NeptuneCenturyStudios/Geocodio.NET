@@ -93,13 +93,37 @@ namespace Geocodio
         }
 
         /// <summary>
-        /// Executes a batch request to look up multiple addresses
+        /// Executes a batch request to look up multiple addresses. Pass in a Dictionary of AddressRequest objects bound by an integer ID key.
         /// </summary>
         /// <param name="addresses"></param>
         /// <remarks>You can batch up to 10000 addresses in a single request</remarks>
         /// <returns></returns>
-        public GeocodioBatchResponse GetGeolocations(string[] addresses)
-        {
+        public GeocodioBatchResponse GetGeolocations(Dictionary<int,GeocodioAddressRequest> addresses) {
+            return this.GetGeolocations((Object)addresses);
+        }
+        /// <summary>
+        /// Executes a batch request to look up multiple addresses. Pass in a Dictionary of strings bound by an integer ID key.
+        /// </summary>
+        /// <param name="addresses"></param>
+        /// <remarks>You can batch up to 10000 addresses in a single request</remarks>
+        /// <returns></returns>
+        public GeocodioBatchResponse GetGeolocations(Dictionary<int,String> addresses) {
+            return this.GetGeolocations((Object)addresses);
+        }
+        /// <summary>
+        /// Executes a batch request to look up multiple addresses. Pass in an array of strings.
+        /// </summary>
+        /// <param name="addresses"></param>
+        /// <remarks>You can batch up to 10000 addresses in a single request</remarks>
+        /// <returns></returns>
+        public GeocodioBatchResponse GetGeolocations(String[] addresses) {
+            return this.GetGeolocations((Object)addresses);
+        }
+
+
+
+
+        private GeocodioBatchResponse GetGeolocations(Object addresses)
 
             //some sanity checks
             if (addresses == null)
@@ -108,10 +132,12 @@ namespace Geocodio
                 throw new ArgumentNullException(nameof(addresses));
             }
 
-            if (addresses.Length > 10000)
+            //too many addresses in the batch
+            if (addresses.GetType()==typeof(String[]) && (((String[])addresses).Length > 10000))
             {
-                //too many addresses in the batch
-                throw new InvalidOperationException("Geocodio only allows a maximum of 10000 addresses per batch");
+                throw new InvalidOperationException("Geocodio only allows a maximum of 10000 addresses per batch (array of string addresses)");
+            } else if (addresses.GetType() == typeof(Dictionary<int,Object>) && (((Dictionary<int,Object>)addresses).Count > 10000)) {
+                throw new InvalidOperationException("Geocodio only allows a maximum of 10000 addresses per batch (Dictionary of identified addresses)");
             }
 
             if (string.IsNullOrWhiteSpace(ApiKey))

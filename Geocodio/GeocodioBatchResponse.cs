@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Geocodio
 {
@@ -15,23 +16,29 @@ namespace Geocodio
 
         #region Constructor
         public GeocodioBatchResponse(JToken response) {
-
             //create list
             Results = new List<GeocodioBatchResult>();
-
-            //iterate through each result
-            foreach(var result in response["results"])
-            {
-                //create new result
-                var geoRes = new GeocodioBatchResult()
-                {
-                    Query = (string)result["query"],
-                    Response = new GeocodioResponse(result["response"])
-                };
-
-                Results.Add(geoRes);
+            Object contents = null;
+            try {
+                contents = response["results"].ToObject<IDictionary<string, JObject>>();
+                foreach (KeyValuePair<string, JObject> result in ((Dictionary<string, JObject>)contents)) {
+                    Results.Add(new GeocodioBatchResult() {
+                        ID = result.Key,
+                        Query = result.Value["query"],
+                        Response = new GeocodioResponse(result.Value["response"])
+                    });
+                }
+            } catch (Exception e) {
+                int count = 0;
+                foreach (var result in response["results"]) {
+                    count++;
+                    Results.Add(new GeocodioBatchResult() {
+                        ID = count.ToString(),
+                        Query = (string)result["query"],
+                        Response = new GeocodioResponse(result["response"])
+                    });
+                }
             }
-
         }
         #endregion
     }

@@ -8,7 +8,8 @@ namespace Geocodio
 {
     public class GeocodioBatchResult
     {
-        public string Query { get; set; }
+        public string ID { get; set; }
+        public Object Query { get; set; }
         public GeocodioResponse Response { get; set; }
     }
 }

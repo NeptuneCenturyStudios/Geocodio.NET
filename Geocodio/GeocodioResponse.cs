@@ -52,6 +52,7 @@ namespace Geocodio
                         County = (string)addrComp?["county"],
                         State = (string)addrComp?["state"],
                         Zip = (string)addrComp?["zip"],
+                        FormattedStreet = (string)result["formatted_street"],
                     },
                     FormattedAddress = (string)result["formatted_address"],
                     Location = new GeocodioLocation()
@@ -65,6 +66,11 @@ namespace Geocodio
                 //add to the collection of results
                 Results.Add(geoResult);
             }
+            if (Results.Count==0 && response["error"]!=null) {
+				Results.Add(new GeocodioResult() {
+					Error = response["error"].ToString()
+				});
+			}
         }
         #endregion
 
