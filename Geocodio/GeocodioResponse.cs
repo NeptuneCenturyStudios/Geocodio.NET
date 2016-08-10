@@ -66,6 +66,11 @@ namespace Geocodio
                 //add to the collection of results
                 Results.Add(geoResult);
             }
+            if (Results.Count==0 && response["error"]!=null) {
+				Results.Add(new GeocodioResult() {
+					Error = response["error"].ToString()
+				});
+			}
         }
         #endregion
 
