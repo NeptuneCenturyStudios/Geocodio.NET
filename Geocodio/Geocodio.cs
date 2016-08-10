@@ -112,7 +112,7 @@ namespace Geocodio
             {
                 //too many addresses in the batch
                 throw new InvalidOperationException("Geocodio only allows a maximum of 10000 addresses per batch (array of string addresses)");
-            } else if (addresses.GetType() == typeof(List<GeocodioAddressComponents>) && (((List<GeocodioAddressComponents>)addresses).Count > 10000)) {
+            } else if (addresses.GetType() == typeof(List<GeocodioAddressRequest>) && (((List<GeocodioAddressRequest>)addresses).Count > 10000)) {
 				//too many addresses in the batch
 				throw new InvalidOperationException("Geocodio only allows a maximum of 10000 addresses per batch (Dictionary of identified addresses)");
 			}
