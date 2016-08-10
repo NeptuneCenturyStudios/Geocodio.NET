@@ -120,11 +120,9 @@ namespace Geocodio
             return this.GetGeolocations((Object)addresses);
         }
 
-
-
-
+        
         private GeocodioBatchResponse GetGeolocations(Object addresses)
-
+        { 
             //some sanity checks
             if (addresses == null)
             {
