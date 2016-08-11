@@ -18,8 +18,12 @@ namespace TestApp
 
             // Return a set of addresses based on latitude and longitude
             var geo = new Geocodio.Geocodio();
-
+            // Get the api key from app settings
             geo.ApiKey = ConfigurationManager.AppSettings["ApiKey"];
+
+            // TODO: Create some tests
+
+            Console.ReadKey();
 
         }
     }
