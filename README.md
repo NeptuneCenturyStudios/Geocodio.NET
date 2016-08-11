@@ -7,5 +7,6 @@ Change Log
 --------------------------------------------------
 Version 0.6b
 + Added support for sending Geolocation requests based on address components - thanks to @Ensemblebd
+
 Version 0.5b
 + Added GetGeolocation() and GetGeolocationAsync()
