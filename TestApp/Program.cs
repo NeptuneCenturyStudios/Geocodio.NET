@@ -34,7 +34,15 @@ namespace TestApp
                 geo,
                 new Dictionary<int, GeocodioAddressRequest>()
                 {
-                    { 1, new GeocodioAddressRequest() { Number = "1", Street = "Google Drive", PostalCode = "78105" } }
+                    { 1, new GeocodioAddressRequest() { Street = "1 Google Drive", PostalCode = "78105" } },
+                    { 2, new GeocodioAddressRequest()
+                        {
+                            Street = "1600 Amphitheatre Parkway",
+                            City = "Mountain View",
+                            State = "California",
+                            PostalCode = "94043"
+                        }
+                    }
                 }
             );
 

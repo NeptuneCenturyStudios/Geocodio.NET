@@ -21,8 +21,9 @@ namespace Geocodio
     }
 
     public class GeocodioAddressRequest {
-        [JsonProperty(propertyName: "number")]
-        public string Number { get; set; }
+        // This is not a supported parameter in geocodio
+        //[JsonProperty(propertyName: "number")]
+        //public string Number { get; set; }
         [JsonProperty(propertyName: "street")]
         public string Street { get; set; }
         [JsonProperty(propertyName: "city")]
