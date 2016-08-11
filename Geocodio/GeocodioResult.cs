@@ -14,7 +14,9 @@ namespace Geocodio
         public string FormattedAddress { get; set; }
         public GeocodioLocation Location { get; set; }
         public decimal Accuracy { get; set; }
-        public string Error { get; set; }
+
+        // Moved this to the GeocodioResponse object instead
+        //public string Error { get; set; }
         #endregion
 
     }
