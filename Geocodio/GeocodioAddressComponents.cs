@@ -18,6 +18,7 @@ namespace Geocodio
         public string Zip { get; set; }
         public string FormattedStreet { get; set; }
     }
+
     public class GeocodioAddressRequest {
         public string number { get; set; }
         public string street { get; set; }
