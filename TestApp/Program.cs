@@ -34,7 +34,7 @@ namespace TestApp
                 geo,
                 new Dictionary<int, GeocodioAddressRequest>()
                 {
-                    { 1, new GeocodioAddressRequest() { number = "1", street = "Google Drive" } }
+                    { 1, new GeocodioAddressRequest() { number = "1", street = "Google Drive", postal_code = "78105" } }
                 }
             );
 
@@ -51,8 +51,6 @@ namespace TestApp
         /// </summary>
         private static void GeolocateSingleAddress(Geocodio.Geocodio geo, string address)
         {
-
-            // First, look up the info for an address
             Console.WriteLine();
             Console.WriteLine("Looking up address: {0}", address);
 
@@ -88,8 +86,6 @@ namespace TestApp
         /// <param name="address"></param>
         private static void GeolocateAddresses(Geocodio.Geocodio geo, Dictionary<int, GeocodioAddressRequest> addresses)
         {
-
-            // First, look up the info for an address
             Console.WriteLine();
             Console.WriteLine("Looking up multiple addresses");
 
@@ -101,18 +97,24 @@ namespace TestApp
                 // How many results?
                 Console.WriteLine("Found {0} results", batch.Results.Count);
 
-                // Iterate over our responses
+                // Iterate over our batch results
                 foreach (var batchResult in batch.Results)
                 {
-
+                    // Iterate over our results
                     foreach (var result in batchResult.Response.Results)
                     {
-
                         Console.WriteLine();
                         Console.WriteLine(result.FormattedAddress);
                         Console.WriteLine("With an accuracy of {0}", result.Accuracy);
                         Console.WriteLine("Lat/Lng: {0}, {1}", result.Location.Lat, result.Location.Lng);
                     }
+
+                    // Was there an error?
+                    if (!string.IsNullOrWhiteSpace(batchResult.Response.Error))
+                    {
+                        throw new Exception(batchResult.Response.Error);
+                    }
+
                 }
             }
             catch (Exception ex)
