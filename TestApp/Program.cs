@@ -34,7 +34,7 @@ namespace TestApp
                 geo,
                 new Dictionary<int, GeocodioAddressRequest>()
                 {
-                    { 1, new GeocodioAddressRequest() { number = "1", street = "Google Drive", postal_code = "78105" } }
+                    { 1, new GeocodioAddressRequest() { Number = "1", Street = "Google Drive", PostalCode = "78105" } }
                 }
             );
 
@@ -60,7 +60,7 @@ namespace TestApp
                 var response = geo.GetGeolocation(address);
 
                 // How many results?
-                Console.WriteLine("Found {0} results", response.Results.Count);
+                Console.WriteLine("Found {0} result(s)", response.Results.Count);
 
                 // Iterate over our responses
                 foreach (var result in response.Results)
@@ -94,12 +94,17 @@ namespace TestApp
                 // Request geolocation information
                 var batch = geo.GetGeolocations(addresses);
 
-                // How many results?
-                Console.WriteLine("Found {0} results", batch.Results.Count);
+                // How many batches?
+                Console.WriteLine("Processing {0} batch(es)", batch.Results.Count);
 
                 // Iterate over our batch results
                 foreach (var batchResult in batch.Results)
                 {
+                    Console.WriteLine();
+                    Console.WriteLine("Processing batch with id {0}", batchResult.ID);
+                    // How many results?
+                    Console.WriteLine("Found {0} result(s)", batchResult.Response.Results.Count);
+
                     // Iterate over our results
                     foreach (var result in batchResult.Response.Results)
                     {

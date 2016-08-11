@@ -21,13 +21,19 @@ namespace Geocodio
     }
 
     public class GeocodioAddressRequest {
-        public string number { get; set; }
-        public string street { get; set; }
-        public string city { get; set; }
-        public string county { get; set; }
-        public string state { get; set; }
+        [JsonProperty(propertyName: "number")]
+        public string Number { get; set; }
+        [JsonProperty(propertyName: "street")]
+        public string Street { get; set; }
+        [JsonProperty(propertyName: "city")]
+        public string City { get; set; }
+        [JsonProperty(propertyName: "county")]
+        public string County { get; set; }
+        [JsonProperty(propertyName: "state")]
+        public string State { get; set; }
         [JsonProperty(propertyName: "postal_code")]
         public string PostalCode { get; set; }
-        public string address { get; set; }
+        [JsonProperty(propertyName: "address")]
+        public string Address { get; set; }
     }
 }
