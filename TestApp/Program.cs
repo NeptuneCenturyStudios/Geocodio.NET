@@ -46,7 +46,6 @@ namespace TestApp
                 }
             );
 
-
             // Wait to exit
             Console.WriteLine();
             Console.WriteLine("Done. Press any key to exit.");
@@ -88,10 +87,10 @@ namespace TestApp
         }
 
         /// <summary>
-        /// Look up address from A
+        /// Looks up addresses from a dictionary of GeocodioAddressRequest objects
         /// </summary>
         /// <param name="geo"></param>
-        /// <param name="address"></param>
+        /// <param name="addresses"></param>
         private static void GeolocateAddresses(Geocodio.Geocodio geo, Dictionary<int, GeocodioAddressRequest> addresses)
         {
             Console.WriteLine();
@@ -134,10 +133,8 @@ namespace TestApp
             {
                 LogError(ex);
             }
-
         }
-
-
+ 
         /// <summary>
         /// Logs an exception that occurs
         /// </summary>

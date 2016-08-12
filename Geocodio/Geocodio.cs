@@ -16,6 +16,12 @@ namespace Geocodio
     /// </summary>
     public class Geocodio
     {
+        /// <summary>
+        /// The maximum number of addresses that can be sent to the api as per Geocod.io
+        /// </summary>
+        public const int MAX_BATCH_COUNT = 10000;
+
+
         #region Properties
         /// <summary>
         /// Gets or sets the api key used to authenticate requests to Geocodio's REST API
@@ -140,13 +146,10 @@ namespace Geocodio
             }
 
             //too many addresses in the batch
-            if (addresses is string[] && (((string[])addresses).Length > 10000))
+            if ((addresses is string[] && (((string[])addresses).Length > MAX_BATCH_COUNT))
+                || (addresses is Dictionary<int, object> && (((Dictionary<int, object>)addresses).Count > MAX_BATCH_COUNT)))
             {
-                throw new InvalidOperationException("Geocodio only allows a maximum of 10000 addresses per batch (array of string addresses)");
-            }
-            else if (addresses is Dictionary<int, object> && (((Dictionary<int, object>)addresses).Count > 10000))
-            {
-                throw new InvalidOperationException("Geocodio only allows a maximum of 10000 addresses per batch (Dictionary of identified addresses)");
+                throw new InvalidOperationException("Geocodio only allows a maximum of 10000 addresses per batch.");
             }
 
             if (string.IsNullOrWhiteSpace(ApiKey))
