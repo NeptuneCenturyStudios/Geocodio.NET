@@ -15,24 +15,32 @@ namespace Geocodio
         #endregion
 
         #region Constructor
-        public GeocodioBatchResponse(JToken response) {
+        public GeocodioBatchResponse(JToken response)
+        {
             //create list
             Results = new List<GeocodioBatchResult>();
-            Object contents = null;
-            try {
-                contents = response["results"].ToObject<IDictionary<string, JObject>>();
-                foreach (KeyValuePair<string, JObject> result in ((Dictionary<string, JObject>)contents)) {
-                    Results.Add(new GeocodioBatchResult() {
+            
+            try
+            {
+                var contents = response["results"].ToObject<IDictionary<string, JObject>>();
+                foreach (KeyValuePair<string, JObject> result in ((Dictionary<string, JObject>)contents))
+                {
+                    Results.Add(new GeocodioBatchResult()
+                    {
                         ID = result.Key,
                         Query = result.Value["query"],
                         Response = new GeocodioResponse(result.Value["response"])
                     });
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception)
+            {
                 int count = 0;
-                foreach (var result in response["results"]) {
+                foreach (var result in response["results"])
+                {
                     count++;
-                    Results.Add(new GeocodioBatchResult() {
+                    Results.Add(new GeocodioBatchResult()
+                    {
                         ID = count.ToString(),
                         Query = (string)result["query"],
                         Response = new GeocodioResponse(result["response"])

@@ -104,7 +104,7 @@ namespace Geocodio
         /// <param name="addresses"></param>
         /// <remarks>You can batch up to 10000 addresses in a single request</remarks>
         /// <returns></returns>
-        public GeocodioBatchResponse GetGeolocations(Dictionary<int, GeocodioAddressRequest> addresses)
+        public GeocodioBatchResponse GetGeolocations(GeocodioAddressRequestBatch addresses)
         {
             return this.GetGeolocations((object)addresses);
         }

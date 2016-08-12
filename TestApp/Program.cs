@@ -32,19 +32,35 @@ namespace TestApp
             // Look up multiple addresses using request object
             GeolocateAddresses(
                 geo,
-                new Dictionary<int, GeocodioAddressRequest>()
-                {
-                    { 1, new GeocodioAddressRequest() { Street = "1 Google Drive", PostalCode = "78105" } },
-                    { 2, new GeocodioAddressRequest()
-                        {
-                            Street = "1600 Amphitheatre Parkway",
-                            City = "Mountain View",
-                            State = "California",
-                            PostalCode = "94043"
-                        }
+                new GeocodioAddressRequestBatch(
+                    new[] { new GeocodioAddressRequest() {
+                                Street = "1 Google Drive",
+                                PostalCode = "78105"
+                            },
+                            new GeocodioAddressRequest() {
+                                Street = "1600 Amphitheatre Parkway",
+                                City = "Mountain View",
+                                State = "California",
+                                PostalCode = "94043"
+                            }
                     }
-                }
+                )
+
             );
+
+            //new GeocodioAddressRequestBatch()
+            //    {
+            //        { 1, new GeocodioAddressRequest() { Street = "1 Google Drive", PostalCode = "78105" } },
+            //        { 2, new GeocodioAddressRequest()
+            //            {
+            //                Street = "1600 Amphitheatre Parkway",
+            //                City = "Mountain View",
+            //                State = "California",
+            //                PostalCode = "94043"
+            //            }
+            //        }
+            //    }
+
 
             // Wait to exit
             Console.WriteLine();
@@ -91,7 +107,7 @@ namespace TestApp
         /// </summary>
         /// <param name="geo"></param>
         /// <param name="addresses"></param>
-        private static void GeolocateAddresses(Geocodio.Geocodio geo, Dictionary<int, GeocodioAddressRequest> addresses)
+        private static void GeolocateAddresses(Geocodio.Geocodio geo, GeocodioAddressRequestBatch addresses)
         {
             Console.WriteLine();
             Console.WriteLine("Looking up multiple addresses");
@@ -134,7 +150,7 @@ namespace TestApp
                 LogError(ex);
             }
         }
- 
+
         /// <summary>
         /// Logs an exception that occurs
         /// </summary>
