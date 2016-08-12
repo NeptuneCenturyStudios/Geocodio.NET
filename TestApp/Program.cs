@@ -33,33 +33,50 @@ namespace TestApp
             GeolocateAddresses(
                 geo,
                 new GeocodioAddressRequestBatch(
-                    new[] { new GeocodioAddressRequest() {
-                                Street = "1 Google Drive",
-                                PostalCode = "78105"
-                            },
-                            new GeocodioAddressRequest() {
-                                Street = "1600 Amphitheatre Parkway",
-                                City = "Mountain View",
-                                State = "California",
-                                PostalCode = "94043"
-                            }
+                    new[] 
+                    {
+                        new GeocodioAddressRequest()
+                        {
+                            Street = "1 Google Drive",
+                            PostalCode = "78105"
+                        },
+                        new GeocodioAddressRequest()
+                        {
+                            Street = "1600 Amphitheatre Parkway",
+                            City = "Mountain View",
+                            State = "California",
+                            PostalCode = "94043"
+                        }
                     }
                 )
 
             );
 
-            //new GeocodioAddressRequestBatch()
-            //    {
-            //        { 1, new GeocodioAddressRequest() { Street = "1 Google Drive", PostalCode = "78105" } },
-            //        { 2, new GeocodioAddressRequest()
-            //            {
-            //                Street = "1600 Amphitheatre Parkway",
-            //                City = "Mountain View",
-            //                State = "California",
-            //                PostalCode = "94043"
-            //            }
-            //        }
-            //    }
+
+            // Look up multiple addresses using request object with explicit ids
+            GeolocateAddresses(
+                geo,
+                new GeocodioAddressRequestBatch()
+                {
+                    { 5621, new GeocodioAddressRequest()
+                        {
+                            Street = "1 Google Drive",
+                            PostalCode = "78105"
+                        }
+                    },
+                    { 5622, new GeocodioAddressRequest()
+                        {
+                            Street = "1600 Amphitheatre Parkway",
+                            City = "Mountain View",
+                            State = "California",
+                            PostalCode = "94043"
+                        }
+                    }
+                }
+
+            );
+
+
 
 
             // Wait to exit
