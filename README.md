@@ -5,6 +5,9 @@ This library provides classes and methods for interacting with Geocodio's REST A
 
 Change Log
 --------------------------------------------------
+Version 0.65b
++ A few bug fixes and improvements
+
 Version 0.6b
 + Added support for sending Geolocation requests based on address components - thanks to @Ensemblebd
 
