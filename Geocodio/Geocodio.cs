@@ -102,6 +102,7 @@ namespace Geocodio
         {
             return this.GetGeolocations((object)addresses);
         }
+
         /// <summary>
         /// Executes a batch request to look up multiple addresses. Pass in a Dictionary of strings bound by an integer ID key.
         /// </summary>
@@ -112,6 +113,7 @@ namespace Geocodio
         {
             return this.GetGeolocations((object)addresses);
         }
+
         /// <summary>
         /// Executes a batch request to look up multiple addresses. Pass in an array of strings.
         /// </summary>
@@ -123,7 +125,11 @@ namespace Geocodio
             return this.GetGeolocations((object)addresses);
         }
 
-
+        /// <summary>
+        /// Calls the api to geolocate the addresses passed in
+        /// </summary>
+        /// <param name="addresses"></param>
+        /// <returns></returns>
         private GeocodioBatchResponse GetGeolocations(object addresses)
         {
             //some sanity checks
@@ -134,11 +140,11 @@ namespace Geocodio
             }
 
             //too many addresses in the batch
-            if (addresses.GetType() == typeof(string[]) && (((string[])addresses).Length > 10000))
+            if (addresses is string[] && (((string[])addresses).Length > 10000))
             {
                 throw new InvalidOperationException("Geocodio only allows a maximum of 10000 addresses per batch (array of string addresses)");
             }
-            else if (addresses.GetType() == typeof(Dictionary<int, object>) && (((Dictionary<int, object>)addresses).Count > 10000))
+            else if (addresses is Dictionary<int, object> && (((Dictionary<int, object>)addresses).Count > 10000))
             {
                 throw new InvalidOperationException("Geocodio only allows a maximum of 10000 addresses per batch (Dictionary of identified addresses)");
             }
